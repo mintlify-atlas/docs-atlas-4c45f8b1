@@ -1,0 +1,56 @@
+---
+title: "Profiling Jupyter Notebooks"
+description: "Profile entire notebooks or individual cells using the flame icon buttons added to the Jupyter toolbar and cell controls."
+---
+
+The Flamegraph extension adds flame icon (🔥) buttons to the Jupyter notebook interface so you can profile code without leaving your notebook.
+
+<Note>
+  Jupyter notebook profiling requires the [Jupyter extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) (`ms-toolsai.jupyter`) to be installed and active.
+</Note>
+
+## Profile an entire notebook
+
+<Steps>
+  <Step title="Open the notebook">
+    Open a `.ipynb` file in VS Code.
+  </Step>
+  <Step title="Click the flame button">
+    Click the 🔥 button in the notebook toolbar at the top of the editor. This runs the command **Flamegraph: Profile notebook**.
+  </Step>
+  <Step title="Wait for execution">
+    The extension attaches py-spy to the Jupyter kernel, then executes all cells. Profiling runs for the entire duration of the notebook execution.
+  </Step>
+  <Step title="View results">
+    After all cells finish, the flamegraph loads automatically. Inline annotations appear inside every executed cell showing time spent in each function scope.
+  </Step>
+</Steps>
+
+## Profile a single cell
+
+<Steps>
+  <Step title="Locate the cell">
+    Navigate to the cell you want to profile.
+  </Step>
+  <Step title="Click the flame button next to the cell">
+    Click the 🔥 button next to the cell's run button (in the cell toolbar or execute gutter). This runs the command **Flamegraph: Profile Cell**.
+  </Step>
+  <Step title="View results">
+    Once the cell finishes executing, inline annotations appear within that cell showing profiling data for all functions called during its execution.
+  </Step>
+</Steps>
+
+You can also trigger cell profiling from the Command Palette:
+
+```
+Flamegraph: Profile Cell
+```
+
+## Memory profiling in notebooks
+
+Memray memory profiling is also available for notebooks. Use the Command Palette to access these commands:
+
+- **Flamegraph: Profile cell with memray** — profiles the active cell and shows heap allocations at peak memory usage.
+- **Flamegraph: Profile notebook with memray** — profiles the entire notebook run with memray.
+
+See [Memory Profiling with Memray](/profiling/memory-profiling) for platform support and configuration details.

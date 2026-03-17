@@ -1,0 +1,62 @@
+---
+title: "Profiling Pytest Tests"
+description: "Profile your entire pytest suite or a single test file to find performance bottlenecks in your tests."
+---
+
+The Flamegraph extension provides first-class support for profiling pytest runs. You can profile all tests in a workspace or just the tests in the active file, and the results appear as a flamegraph covering the complete test run.
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `Flamegraph: Profile all unit tests with pytest` | Runs `pytest` in the workspace root and profiles the full test suite |
+| `Flamegraph: Profile unit tests in file with pytest` | Runs `pytest` on the currently active file and profiles those tests |
+
+Both commands are available from the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`).
+
+## Usage
+
+<Steps>
+  <Step title="Open a test file">
+    Open any Python test file (e.g. `test_my_module.py`) in the editor.
+  </Step>
+  <Step title="Run the profile command">
+    Open the Command Palette and run one of the pytest profiling commands above.
+  </Step>
+  <Step title="View the flamegraph">
+    After pytest finishes, the flamegraph loads automatically showing the full call stack for the entire test run, including setup, teardown, and all test functions.
+  </Step>
+</Steps>
+
+## Custom pytest configurations with tasks.json
+
+For more control — such as targeting a specific test function, passing custom flags, or enabling native frame profiling — define a custom task in `.vscode/tasks.json`. See [VS Code Tasks](/configuration/tasks) for full configuration reference.
+
+<Tip>
+  Add `"native": true` to your task definition to enable py-spy's native frame profiling. This captures C extension frames (e.g. NumPy, pandas internals) alongside Python frames, giving a more complete picture of where time is spent.
+</Tip>
+
+The following example profiles a single test function with native profiling enabled:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "flamegraph",
+      "args": ["-m", "pytest", "path/to/my_test_file.py::test_my_function"],
+      "native": true,
+      "subprocesses": false,
+      "label": "Flamegraph: Profile my_test_function"
+    }
+  ]
+}
+```
+
+This generates and runs the command:
+
+```bash
+py-spy record --output profile.pyspy --format raw --full-filenames --native -- python -m pytest path/to/my_test_file.py::test_my_function
+```
+
+You can bind any custom task to a keyboard shortcut — see [Keyboard Shortcuts](/configuration/keyboard-shortcuts) for details.

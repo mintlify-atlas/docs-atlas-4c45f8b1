@@ -1,97 +1,62 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Flamegraph for VS Code"
+description: "Profile Python code with py-spy and memray directly in VS Code. Visualize performance as interactive flamegraphs with inline code annotations."
 ---
 
-## Setting up
-
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Install the extension and profile your first Python script in minutes.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Jupyter Notebooks" icon="book" href="/profiling/jupyter-notebooks">
+    Profile individual cells or entire notebooks with a single click.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Memory Profiling" icon="memory" href="/profiling/memory-profiling">
+    Analyze heap allocations and find memory leaks with memray.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="All Commands" icon="terminal" href="/reference/commands">
+    Browse the full list of available commands and what they do.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## What is Flamegraph?
 
-Everything you need to create world-class documentation.
+Flamegraph is a VS Code extension that integrates two best-in-class Python profilers — [py-spy](https://github.com/benfred/py-spy) and [memray](https://github.com/bloomberg/memray) — directly into your editor. Profile Python scripts and Jupyter notebooks without modifying your code, then explore results in an interactive flamegraph panel with line-level annotations inside your source files.
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
+<CardGroup cols={2}>
+  <Card title="CPU Profiling" icon="gauge-high">
+    Profile Python scripts and notebooks with py-spy. No code changes required — py-spy attaches to the running process as a sampling profiler.
   </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
+  <Card title="Memory Profiling" icon="chart-line">
+    Track heap allocations with memray on Linux, macOS, WSL, and Docker. Identify peak memory usage and detect memory leaks.
   </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
+  <Card title="Interactive Flamegraph" icon="fire">
+    Zoom, filter, and navigate the flamegraph. Click any frame to jump directly to the source file at the exact line.
   </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
+  <Card title="Inline Annotations" icon="code">
+    See timing and memory data as inline decorations next to each function in your source files, filtered by the selected flamegraph node.
   </Card>
-</Columns>
+</CardGroup>
 
-## Need inspiration?
+## How it works
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+The extension profiles your code using py-spy or memray and renders results in two linked views:
+
+1. **Flamegraph panel** — an interactive visualization of the full call stack, with zoom, module filtering, and code display toggle.
+2. **Inline annotations** — per-line timing or memory decorations in your editor, synchronized with the flamegraph selection.
+
+When you click a node in the flamegraph, the inline annotations update to show only the timing data for that portion of the call stack. Use `Cmd+Click` (Mac) or `Ctrl+Click` (Windows/Linux) on any flamegraph frame to open the corresponding source file.
+
+## Supported profilers
+
+<CardGroup cols={2}>
+  <Card title="py-spy" icon="fire-flame-curved" href="https://github.com/benfred/py-spy">
+    A sampling profiler for Python programs. Works on Linux, macOS, and Windows. No code changes or restarts required.
+  </Card>
+  <Card title="memray" icon="database" href="https://github.com/bloomberg/memray">
+    A memory profiler for Python by Bloomberg. Tracks every allocation. Supported on Linux, macOS, WSL, and Docker.
+  </Card>
+</CardGroup>
+
+<Note>
+  The extension requires the [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) and the [Jupyter extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) to be installed in VS Code.
+</Note>

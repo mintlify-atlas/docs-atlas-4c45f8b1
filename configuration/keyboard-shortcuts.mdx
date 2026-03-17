@@ -1,0 +1,50 @@
+---
+title: "Keyboard Shortcuts"
+description: "Bind flamegraph profiling tasks to keyboard shortcuts for fast, one-key profiling."
+---
+
+You can bind any [flamegraph task](/configuration/tasks) to a keyboard shortcut by adding an entry to VS Code's `keybindings.json`. This lets you trigger a profiling run without leaving the keyboard.
+
+## Setup
+
+<Steps>
+  <Step title="Open the Command Palette">
+    Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS).
+  </Step>
+  <Step title="Open Keyboard Shortcuts (JSON)">
+    Type **Preferences: Open Keyboard Shortcuts (JSON)** and select it. This opens your personal `keybindings.json` file.
+  </Step>
+  <Step title="Add a keybinding entry">
+    Add an entry that runs your flamegraph task by label:
+
+    ```json
+    {
+      "key": "ctrl+shift+enter",
+      "command": "workbench.action.tasks.runTask",
+      "args": "Flamegraph: My custom profile command"
+    }
+    ```
+
+    The `args` value must exactly match the `label` of the task defined in your `.vscode/tasks.json`.
+  </Step>
+</Steps>
+
+## How It Works
+
+The `workbench.action.tasks.runTask` command accepts a task label as its `args` value. When you press the bound key, VS Code finds the task with that label and runs it — which in this case launches py-spy and begins profiling.
+
+Make sure the task label in `keybindings.json` matches the `label` field in your `tasks.json` exactly, including capitalization. If you haven't created a task yet, see [VS Code Tasks](/configuration/tasks) first.
+
+<Tip>
+  If you want profiling on `F5`, you can override the default debug keybinding:
+
+  ```json
+  {
+    "key": "f5",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flamegraph: My custom profile command"
+  }
+  ```
+
+  Keep in mind this will shadow the standard **Start Debugging** shortcut. You can add a `"when"` clause to restrict when the override applies — for example, `"when": "editorLangId == python"`.
+</Tip>

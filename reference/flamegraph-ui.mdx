@@ -1,0 +1,48 @@
+---
+title: "Flamegraph Panel"
+description: "How to navigate and use the interactive flamegraph visualization."
+---
+
+## Overview
+
+The flamegraph panel displays the complete call stack of your profiled code. Each horizontal bar represents a function call — its width represents the proportion of total time (CPU profiling) or memory (memory profiling) attributed to that function and everything it called. Colors identify which module a function belongs to.
+
+Open the panel at any time with the `Flamegraph: Show` command or from the Command Palette.
+
+## Interactions
+
+<Tabs>
+  <Tab title="Mouse">
+    | Action | Effect |
+    |--------|--------|
+    | Click a frame | Zoom in to that frame, making it fill the full width |
+    | Click a parent frame | Zoom out to that frame |
+    | `Cmd+Click` (Mac) / `Ctrl+Click` (Windows/Linux) | Jump to the source file at the exact line number |
+    | Click the `all` node | Opens the profiled file in the VS Code editor |
+    | Click a legend item | Toggle that module on or off in the flamegraph |
+  </Tab>
+  <Tab title="Legend">
+    The legend lists each module with its total time or memory contribution.
+
+    - **Click** a legend item to show or hide all frames from that module. When a module is hidden, its frames are collapsed into their parent.
+    - **Hover** over a legend item to see a tooltip with total time and own time for that module.
+    - **Text filter** — Type in the filter input to narrow frames by filename, function name, or module name. The filter supports:
+      - Case-sensitive matching (toggle with the `Aa` button)
+      - Regular expressions (toggle with the `.*` button)
+    - **`</>` toggle** — Switch between displaying source code line content and function names inside each frame.
+  </Tab>
+</Tabs>
+
+## Inline annotations
+
+Inline annotations appear as colored decorations next to function scopes directly in your editor files. They give you timing or memory data without leaving your code.
+
+- **Colors** indicate the nesting level of each scope.
+- **Toggle** annotations on or off with the `Flamegraph: Toggle Inline Profile` command, or by right-clicking in the editor.
+- **Sync with flamegraph** — When `flamegraph.syncInlineAnnotations` is enabled (the default), clicking a node in the flamegraph updates the inline annotations to reflect only the timing of currently visible nodes. This is especially useful when a function is called from multiple locations.
+
+## Linked views
+
+The flamegraph and inline annotations are linked visualizations. Selecting a node in the flamegraph filters the inline annotations to show timing only for the frames visible in that selection. To restore the full view, click the `all` node at the top of the flamegraph.
+
+This linking is controlled by the `flamegraph.syncInlineAnnotations` setting. See [Settings](/configuration/settings) for details.

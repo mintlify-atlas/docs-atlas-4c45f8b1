@@ -1,0 +1,44 @@
+---
+title: "Command Reference"
+description: "All available VS Code commands for the Flamegraph extension."
+---
+
+All commands are accessible from the **Command Palette** (`Cmd+Shift+P` on Mac, `Ctrl+Shift+P` on Windows/Linux). Many commands are also available from context menus and toolbar buttons.
+
+## Accessing commands
+
+- **Command Palette** — Open with `Cmd+Shift+P` / `Ctrl+Shift+P` and type the command name.
+- **Editor toolbar** — The `Flamegraph: Profile file with py-spy` command appears in the run dropdown (`▶`) next to the editor title bar for Python files.
+- **Editor context menu** — Right-click anywhere in a Python editor to access `Flamegraph: Toggle Inline Profile`.
+- **File explorer context menu** — Right-click a `.py` file to run `Flamegraph: Profile file with py-spy`. Right-click a `.pyspy` or `.memray` file to run `Flamegraph: Load Profile`.
+- **Jupyter toolbar** — The `Profile` button appears in the notebook toolbar for Jupyter notebooks.
+- **Jupyter cell buttons** — The `Flamegraph: Profile Cell` button (`🔥`) appears above each code cell.
+
+## CPU profiling (py-spy)
+
+| Command | Description |
+|---------|-------------|
+| `Flamegraph: Profile file with py-spy` | Profile the active Python file using py-spy and display the results |
+| `Flamegraph: Toggle Inline Profile` | Show or hide inline annotations in the editor |
+| `Flamegraph: Show` | Open the flamegraph panel in a new tab |
+| `Flamegraph: Profile Cell` | Profile the active Jupyter cell |
+| `Flamegraph: Profile` | Profile the entire Jupyter notebook |
+| `Flamegraph: Load Profile` | Load a `.pyspy` or `.memray` profile file |
+| `Flamegraph: Attach py-spy to running process` | Attach py-spy to a running process; the extension prompts for a PID |
+| `Flamegraph: Profile all unit tests with pytest` | Run and profile the full `pytest` suite |
+| `Flamegraph: Profile unit tests in file with pytest` | Run and profile `pytest` on the active file |
+| `Flamegraph: Show py-spy top` | Show a live `top`-like view of functions consuming CPU |
+
+## Memory profiling (memray)
+
+<Note>
+  memray is not supported on Windows. On Windows, you can still use memory profiling inside Windows Subsystem for Linux (WSL) or Docker containers.
+</Note>
+
+| Command | Description |
+|---------|-------------|
+| `Flamegraph: Profile file with memray` | Profile the active Python file using memray |
+| `Flamegraph: Profile cell with memray` | Profile the active Jupyter cell using memray |
+| `Flamegraph: Profile notebook with memray` | Profile the entire Jupyter notebook using memray |
+| `Flamegraph: Attach memray to running process` | Attach memray to a running process by PID |
+| `Flamegraph: Attach memray live view to running process` | Real-time memory monitoring for a running process |

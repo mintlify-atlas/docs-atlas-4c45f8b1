@@ -1,0 +1,62 @@
+---
+title: "Memory Profiling with Memray"
+description: "Track heap allocations in Python scripts and notebooks using Bloomberg's memray profiler, integrated directly into VS Code."
+---
+
+The Flamegraph extension supports memory profiling via [memray](https://github.com/bloomberg/memray). Instead of sampling CPU time, memray tracks heap memory allocations and shows a flamegraph representing the call stacks responsible for allocations at the point of peak memory usage.
+
+<Warning>
+  Memray is not supported on Windows. If you are on Windows, you can still use memory profiling inside **WSL** (Windows Subsystem for Linux) or a **Docker container**.
+</Warning>
+
+## Installation
+
+Memray must be installed separately in your Python environment before use:
+
+```bash
+pip install memray
+```
+
+The extension will locate the `memray` binary from the currently active Python environment selected in VS Code.
+
+## Available commands
+
+| Command | Description |
+|---------|-------------|
+| `Flamegraph: Profile file with memray` | Profile the active `.py` file and display heap allocation results |
+| `Flamegraph: Profile cell with memray` | Profile the active notebook cell with memray |
+| `Flamegraph: Profile notebook with memray` | Profile the entire notebook with memray |
+| `Flamegraph: Attach memray to running process` | Attach memray to a running Python process by PID |
+| `Flamegraph: Attach memray live view to running process` | Attach memray to a running process and show a real-time memory view |
+
+All commands are accessible from the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`).
+
+## Platform support
+
+| Platform | Supported |
+|----------|-----------|
+| Linux | Yes |
+| macOS | Yes |
+| WSL | Yes |
+| Docker | Yes |
+| Windows (native) | No |
+
+## Settings
+
+The following settings control memray behavior. Access them via **Settings** (`Cmd+,` / `Ctrl+,`) and search for `flamegraph.memray`:
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `flamegraph.memray.showMemoryLeaks` | `false` | Show allocations not freed before process exit instead of peak usage allocations |
+| `flamegraph.memray.tracePythonAllocators` | `false` | Record allocations made by the pymalloc allocator |
+| `flamegraph.memray.native` | `false` | Track native (C/C++) stack frames as well as Python frames when profiling a script |
+| `flamegraph.memray.nativeAttach` | `false` | Track native (C/C++) frames when attaching to a running process |
+| `flamegraph.memray.alwaysUseSudo` | `false` | Always prepend `sudo` when running memray commands |
+
+<Tip>
+  Enable `flamegraph.memray.showMemoryLeaks` to switch the flamegraph view from peak memory usage to allocations that were never freed before the process exited. This is useful for identifying memory leaks in long-running code.
+</Tip>
+
+## Output file
+
+Memray results are written to `profile.memray` in the workspace root. The extension watches this file and reloads the profile automatically whenever it changes.

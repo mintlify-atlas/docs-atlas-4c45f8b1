@@ -1,0 +1,64 @@
+---
+title: "Introduction"
+description: "Flamegraph is a VS Code extension that integrates py-spy and memray profiling directly into your editor, with an interactive flamegraph view and inline code annotations."
+---
+
+Flamegraph brings Python performance profiling into VS Code without leaving your editor. Profile Python scripts and Jupyter notebooks using [py-spy](https://github.com/benfred/py-spy) for CPU profiling or [memray](https://github.com/bloomberg/memray) for memory profiling, then explore results in two linked views: an interactive flamegraph panel and inline annotations displayed alongside your code.
+
+<CardGroup cols={2}>
+  <Card title="CPU profiling" icon="gauge">
+    Profile Python scripts and Jupyter notebooks with py-spy. No code changes required — py-spy samples the running process.
+  </Card>
+  <Card title="Memory profiling" icon="memory">
+    Profile memory allocations with memray on Linux, macOS, and WSL. Visualize peak heap usage or memory leaks as a flamegraph.
+  </Card>
+  <Card title="Interactive flamegraph" icon="chart-bar">
+    Click to zoom into any call stack frame, filter by module using the legend, and Cmd/Ctrl+Click to jump directly to source code.
+  </Card>
+  <Card title="Inline annotations" icon="code">
+    See timing or memory data for every function scope without leaving the editor. Annotations stay in sync with your flamegraph selection.
+  </Card>
+  <Card title="Jupyter support" icon="book-open">
+    Profile individual cells with the flame icon, or profile the entire notebook from the toolbar.
+  </Card>
+  <Card title="Attach to processes" icon="link">
+    Attach py-spy or memray to any already-running Python process by PID, including support for live memory views.
+  </Card>
+</CardGroup>
+
+## How it works
+
+After profiling completes, results appear in two linked views:
+
+1. **Inline code annotations** — timing or memory information is displayed for each function scope in the editor, with colors indicating the call depth level.
+2. **Interactive flamegraph panel** — the complete call stack is visualized as a flamegraph in a new tab. You can:
+   - Click any frame to zoom in; click a parent frame to zoom out
+   - Cmd+Click (Mac) or Ctrl+Click (Windows/Linux) to open the corresponding source file
+   - Click legend entries to filter the flamegraph by module
+   - Toggle between source file and function name display using the `</>` button in the legend
+
+Selecting a frame in the flamegraph automatically filters the inline annotations to show only the profiling data visible in the current view.
+
+## Prerequisites
+
+- **VS Code** 1.95.0 or later
+- **Python extension** (`ms-python.python`) — required
+- **Jupyter extension** (`ms-toolsai.jupyter`) — required for notebook profiling
+
+## Profiler requirements
+
+**py-spy** is used for CPU profiling and is automatically installed by the extension if not already present.
+
+**memray** is used for memory profiling and must be installed manually. It is only supported on Linux, macOS, and within WSL or Docker containers — not on native Windows.
+
+```bash
+pip install memray
+```
+
+<Note>
+On some Linux distributions and on macOS, py-spy requires elevated permissions to sample other processes. The extension will prompt you to use `sudo` when needed. You can also set `flamegraph.py-spy.alwaysUseSudo` to `true` in your VS Code settings to skip the prompt.
+</Note>
+
+## Next steps
+
+Ready to profile your first script? Follow the [Quickstart](/quickstart) guide to get up and running in under a minute.

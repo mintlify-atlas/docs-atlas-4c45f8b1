@@ -1,0 +1,138 @@
+---
+title: "VS Code Tasks"
+description: "Integrate flamegraph profiling into your workflow using VS Code's task system."
+---
+
+The Flamegraph extension integrates with VS Code's built-in task system through a `flamegraph` task type. This lets you define reusable profiling commands, pass custom arguments to your scripts, and wire them up to keyboard shortcuts.
+
+<Note>
+  Tasks currently support py-spy profiling only. memray profiling is not available via the task system.
+</Note>
+
+## Using the Task Explorer
+
+<Steps>
+  <Step title="Open the Command Palette">
+    Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS).
+  </Step>
+  <Step title="Run a flamegraph task">
+    Type **Tasks: Run Task** and press Enter, then select **flamegraph** from the list of task providers.
+  </Step>
+  <Step title="Choose or customize a task">
+    Pick one of the auto-generated flamegraph tasks, or click the gear icon next to a task to create a `tasks.json` entry you can customize.
+  </Step>
+</Steps>
+
+## Creating a tasks.json File
+
+For repeatable, project-specific profiling commands, create a `.vscode/tasks.json` file in your workspace. Each task entry uses `"type": "flamegraph"` and supports the properties described below.
+
+## Task Properties
+
+<ParamField path="type" type="string" required>
+  Must be `"flamegraph"`. Identifies this task as a Flamegraph profiling task.
+</ParamField>
+
+<ParamField path="label" type="string" required>
+  A human-readable name for the task shown in the Task Explorer and used when binding keyboard shortcuts.
+</ParamField>
+
+<ParamField path="file" type="string">
+  Path to the Python file to profile. Supports VS Code variables such as `${file}` (the currently open file) and `${workspaceFolder}`.
+
+  Omit this field if you are supplying a `pid` or running a module via `args` (e.g. `-m pytest`).
+</ParamField>
+
+<ParamField path="pid" type="string">
+  Process ID of a running process to attach py-spy to. Provide either `file` or `pid`, not both.
+</ParamField>
+
+<ParamField path="mode" type="string" default="record">
+  The py-spy mode to run.
+
+  | Value | Description |
+  |---|---|
+  | `record` | Record a profile and display it as a flamegraph. |
+  | `top` | Show a live `top`-like view of CPU usage. |
+</ParamField>
+
+<ParamField path="args" type="string[]">
+  Additional arguments passed to the profiled script (after `--`). These are appended to the generated py-spy command after the Python interpreter and file path.
+
+  For example, `["--my-flag", "value"]` produces `... -- python <file> --my-flag value`.
+</ParamField>
+
+<ParamField path="subprocesses" type="boolean" default="true">
+  Profile subprocesses spawned by the target process. Set to `false` when profiling tools like pytest that spawn child processes you don't want to trace.
+</ParamField>
+
+<ParamField path="native" type="boolean" default="false">
+  Enable native (C/C++) stack frame profiling. Useful when profiling extensions or libraries with compiled code.
+</ParamField>
+
+<ParamField path="pythonPath" type="string">
+  Path to the Python interpreter to use. If omitted, the extension uses the interpreter selected in the VS Code Python extension.
+</ParamField>
+
+<ParamField path="profilerPath" type="string">
+  Path to the py-spy executable. If omitted, the extension uses the py-spy found in the active environment or the global installation.
+</ParamField>
+
+<ParamField path="sudo" type="boolean" default="false">
+  Run py-spy with `sudo`. Required on macOS and some Linux distributions.
+</ParamField>
+
+## Examples
+
+### Profile the current file with custom arguments
+
+Use `${file}` to profile whatever Python file is currently open in the editor, and pass script-level arguments via `args`:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "flamegraph",
+      "file": "${file}",
+      "args": ["--my-custom-arg1", "value"],
+      "label": "Flamegraph: My custom profile command"
+    }
+  ]
+}
+```
+
+This generates the command:
+
+```bash
+py-spy <py-spy-args> -- python <current-file> --my-custom-arg1 value
+```
+
+### Profile a specific pytest test function
+
+Pass `-m pytest` via `args` to run a specific test through Python's module system. Disable subprocess tracking and enable native frames for C-extension coverage:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "flamegraph",
+      "args": ["-m", "pytest", "path/to/my_test_file.py::test_my_function"],
+      "subprocesses": false,
+      "native": true,
+      "label": "Flamegraph: Profile my_test_function"
+    }
+  ]
+}
+```
+
+This generates the command:
+
+```bash
+py-spy <py-spy-args> --native -- python -m pytest path/to/my_test_file.py::test_my_function
+```
+
+<Tip>
+  After defining a task, you can bind it to a keyboard shortcut for one-key profiling. See [Keyboard Shortcuts](/configuration/keyboard-shortcuts) for setup instructions.
+</Tip>

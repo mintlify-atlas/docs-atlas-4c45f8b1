@@ -1,0 +1,58 @@
+---
+title: "Command-Line Usage"
+description: "Use py-spy or memray from the terminal and load results into VS Code."
+---
+
+You can run py-spy or memray directly from the terminal instead of using the VS Code commands. The extension watches for specific files in your workspace root and automatically loads and displays the profile whenever those files change.
+
+<Note>
+  The output file must be named exactly `profile.pyspy` (for py-spy) or `profile.memray` (for memray) and placed in the **workspace root** for auto-loading to work.
+</Note>
+
+## py-spy
+
+Record a profile with py-spy and save it to `profile.pyspy` in your workspace root:
+
+<CodeGroup>
+
+```bash Profile a script
+py-spy record --output profile.pyspy --format raw --full-filenames -- python my_script.py
+```
+
+```bash Profile with additional arguments
+py-spy record --output profile.pyspy --format raw --full-filenames -- python my_script.py --my-arg value
+```
+
+</CodeGroup>
+
+### Key flags
+
+| Flag | Description |
+|------|-------------|
+| `--output profile.pyspy` | Output filename — must match the watched filename |
+| `--format raw` | Required format for this extension |
+| `--full-filenames` | Recommended; enables correct file path resolution in the flamegraph |
+
+For all available options, run `py-spy record --help` or see the [py-spy documentation](https://github.com/benfred/py-spy).
+
+## memray
+
+Record a memory profile with memray and save it to `profile.memray` in your workspace root:
+
+<CodeGroup>
+
+```bash Profile a script
+memray run --output profile.memray python my_script.py
+```
+
+```bash Profile with native frames
+memray run --native --output profile.memray python my_script.py
+```
+
+</CodeGroup>
+
+<Note>
+  memray is not supported on Windows. It can be used within Windows Subsystem for Linux (WSL) or Docker containers.
+</Note>
+
+Once either file is written or updated, the extension detects the change and automatically opens the flamegraph panel with the new profile data.

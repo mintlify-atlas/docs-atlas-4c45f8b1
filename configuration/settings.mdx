@@ -1,0 +1,98 @@
+---
+title: "Extension Settings"
+description: "Configure the Flamegraph extension behavior through VS Code settings."
+---
+
+All settings can be configured via **File > Preferences > Settings** (or **Code > Settings > Settings** on macOS) by searching for `flamegraph`.
+
+## Display Settings
+
+<ParamField path="flamegraph.syncInlineAnnotations" type="boolean" default="true">
+  Sync inline annotations with the flamegraph. When a node in the flamegraph is clicked, the inline annotations update to reflect only timing information for the visible flamegraph nodes.
+</ParamField>
+
+<ParamField path="flamegraph.showFlamegraph" type="string" default="show">
+  Controls how the flamegraph is displayed after profiling completes.
+
+  | Value | Description |
+  |---|---|
+  | `show` | Display the flamegraph in a new tab after profiling. |
+  | `showAndFocus` | Display the flamegraph in a new tab and bring it to focus after profiling. |
+  | `onlyShowCodeAnnotations` | Only show the code annotations after profiling and do not open the flamegraph tab. The flamegraph panel can be manually opened with the `Flamegraph: Show` command. |
+</ParamField>
+
+## py-spy Settings
+
+These settings control the behavior of [py-spy](https://github.com/benfred/py-spy) when profiling Python scripts or attaching to running processes.
+
+<ParamField path="flamegraph.py-spy.subprocesses" type="boolean" default="true">
+  Profile subprocesses of the original process.
+
+  <Note>
+    On Windows and for some Python versions, this option must be enabled for the profiler to find the Python process.
+  </Note>
+</ParamField>
+
+<ParamField path="flamegraph.py-spy.subprocessesAttach" type="boolean" default="true">
+  Profile subprocesses that are spawned by the process that py-spy is attached to.
+
+  <Note>
+    On Windows and for some Python versions, this option must be enabled for the profiler to find the Python process.
+  </Note>
+</ParamField>
+
+<ParamField path="flamegraph.py-spy.native" type="boolean" default="false">
+  Profile native extensions when profiling a script. Includes stack frames from compiled C/C++ extensions.
+
+  <Warning>
+    This option cannot be used together with `flamegraph.py-spy.nonblocking`. It is also not supported on macOS or some Linux distributions.
+  </Warning>
+</ParamField>
+
+<ParamField path="flamegraph.py-spy.nativeAttach" type="boolean" default="false">
+  Profile native extensions when attaching to a running process.
+
+  <Warning>
+    This option cannot be used together with `flamegraph.py-spy.nonblocking`. It is also not supported on macOS or some Linux distributions.
+  </Warning>
+</ParamField>
+
+<ParamField path="flamegraph.py-spy.gil" type="boolean" default="false">
+  Only include stack traces for threads that are currently holding the GIL (Global Interpreter Lock). Useful for isolating CPU-bound Python work from I/O-bound or native threads.
+</ParamField>
+
+<ParamField path="flamegraph.py-spy.idle" type="boolean" default="false">
+  Include stack traces for idle threads. By default, py-spy omits threads that are not actively executing Python code.
+</ParamField>
+
+<ParamField path="flamegraph.py-spy.nonblocking" type="boolean" default="false">
+  Don't pause the Python process when collecting samples. Reduces the performance impact of sampling, but may lead to inaccurate results.
+</ParamField>
+
+<ParamField path="flamegraph.py-spy.alwaysUseSudo" type="boolean" default="false">
+  Always use `sudo` when running py-spy commands. Required on some Linux distributions where ptrace permissions restrict non-root profiling.
+</ParamField>
+
+## memray Settings
+
+These settings control the behavior of [memray](https://github.com/bloomberg/memray) when performing memory profiling.
+
+<ParamField path="flamegraph.memray.alwaysUseSudo" type="boolean" default="false">
+  Always use `sudo` when running memray commands. Required on some Linux distributions.
+</ParamField>
+
+<ParamField path="flamegraph.memray.tracePythonAllocators" type="boolean" default="false">
+  Record allocations made by the pymalloc allocator. Enables tracking of small Python object allocations that go through Python's internal memory pool.
+</ParamField>
+
+<ParamField path="flamegraph.memray.native" type="boolean" default="false">
+  Track native (C/C++) stack frames as well as Python frames when profiling a script.
+</ParamField>
+
+<ParamField path="flamegraph.memray.nativeAttach" type="boolean" default="false">
+  Track native (C/C++) stack frames as well as Python frames when attaching to a running process.
+</ParamField>
+
+<ParamField path="flamegraph.memray.showMemoryLeaks" type="boolean" default="false">
+  Show memory leaks instead of peak memory usage. Memory leaks are allocations that are not freed until the process exits or the profiler is stopped.
+</ParamField>

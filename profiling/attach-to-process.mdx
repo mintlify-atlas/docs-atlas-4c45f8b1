@@ -1,0 +1,72 @@
+---
+title: "Attaching to a Running Process"
+description: "Attach py-spy or memray to an already-running Python process by PID to profile it without restarting."
+---
+
+You can profile a Python process that is already running by attaching py-spy or memray to it. This is useful when you cannot easily restart the process, or when you want to profile a specific phase of a long-running application.
+
+<Note>
+  Attaching to a process owned by a different user requires elevated privileges. On macOS and Linux, the extension will use `sudo` automatically. If the target process is owned by another user on Linux, you may need to configure passwordless sudo or enable `flamegraph.py-spy.alwaysUseSudo` / `flamegraph.memray.alwaysUseSudo`.
+</Note>
+
+## Attach py-spy to a running process
+
+<Steps>
+  <Step title="Open the Command Palette">
+    Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux).
+  </Step>
+  <Step title="Run the attach command">
+    Search for and select:
+
+    ```
+    Flamegraph: Attach py-spy to running process
+    ```
+  </Step>
+  <Step title="Select the process">
+    A list of running Python processes appears with their PIDs and command lines. Select the process you want to profile.
+  </Step>
+  <Step title="View results">
+    py-spy begins sampling the selected process. The flamegraph and inline annotations update continuously. Stop profiling by pressing `Ctrl+C` in the terminal.
+  </Step>
+</Steps>
+
+## Attach memray to a running process
+
+<Steps>
+  <Step title="Open the Command Palette">
+    Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux).
+  </Step>
+  <Step title="Run the attach command">
+    Search for and select:
+
+    ```
+    Flamegraph: Attach memray to running process
+    ```
+  </Step>
+  <Step title="Select the process">
+    Choose the target Python process from the list. Memray attaches and begins recording heap allocations.
+  </Step>
+  <Step title="Detach and view results">
+    Press `Enter` when prompted to detach memray. The extension processes the results and displays the memory flamegraph.
+  </Step>
+</Steps>
+
+## Memray live view
+
+For a real-time view of memory allocations while a process is running, use:
+
+```
+Flamegraph: Attach memray live view to running process
+```
+
+This opens a live terminal view showing current heap allocations as the process runs. It is useful for observing memory growth in real time without waiting for a snapshot.
+
+## py-spy top view
+
+To monitor CPU usage of a running Python process in a `top`-like terminal display, use:
+
+```
+Flamegraph: Show py-spy top
+```
+
+This shows a continuously updating table of the functions consuming the most CPU time in the selected process. No profile file is saved — it is an interactive live view only.

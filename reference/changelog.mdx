@@ -1,0 +1,315 @@
+---
+title: "Changelog"
+description: "Release history for the Flamegraph VS Code extension."
+---
+
+## Unreleased
+
+### Fixed
+
+- Fixed an issue where the extension attempted to start the memray file profiling task twice, which led to an unnecessary request to terminate the task instance.
+
+## 0.6.3 — 2025-07-22
+
+### Fixed
+
+- Fixed an issue where py-spy and memray installations were not found on Windows in conda environments.
+
+## 0.6.2 — 2025-07-03
+
+### Fixed
+
+- Fixed an issue where the flamegraph would not render for memray profiles with a single corrupted stack trace.
+
+## 0.6.1 — 2025-07-02
+
+### Fixed
+
+- Fixed an issue where the flamegraph panel was stuck at "Loading profile data..." for profiles of very recursive programs.
+- Fixed an issue where the flamegraph panel would not maintain its focus state when closed and reopened.
+
+## 0.6.0 — 2025-06-03
+
+### Added
+
+- Added filtering features to the flamegraph legend. Users can now filter the flamegraph by filename, function name, and module name through a text field. The filter includes options for case-sensitive matching and regular expression support.
+
+### Changed
+
+- New Flamegraph logo.
+
+## 0.5.1 — 2025-05-10
+
+### Fixed
+
+- Resolved an issue with profiling command generation on Linux platforms without `sudo` installed. This previously broke notebook profiling in certain Docker container environments.
+
+### Added
+
+- Added a `"sudo"` argument to the VS Code flamegraph task definition.
+
+### Changed
+
+- The `Flamegraph: Profile file with py-spy` and `Flamegraph: Profile file with memray` commands now also work with Jupyter notebooks.
+
+## 0.5.0 — 2025-05-03
+
+### Added
+
+- Full support for memray profiling, including Jupyter notebook profiling and attaching to running processes. New commands:
+  - `Flamegraph: Profile file with memray`
+  - `Flamegraph: Profile cell with memray`
+  - `Flamegraph: Profile notebook with memray`
+  - `Flamegraph: Attach memray to running process`
+  - `Flamegraph: Attach memray live view to running process`
+- New memray settings: `flamegraph.memray.native`, `flamegraph.memray.nativeAttach`, `flamegraph.memray.showMemoryLeaks`, `flamegraph.memray.tracePythonAllocators`, `flamegraph.memray.alwaysUseSudo`.
+
+### Fixed
+
+- Fixed Python path resolution by enforcing absolute paths. This addresses a problem on Linux where sudo's secure path doesn't include the py-spy binary location.
+- Fixed an issue where py-spy was installed into the global Python environment on Linux, where this is not permitted.
+
+<AccordionGroup>
+  <Accordion title="v0.4.0 — 2025-04-26">
+    ### Added
+
+    - Experimental support for memray profiling, limited to executing Python scripts via `Flamegraph: Profile file with memray`.
+    - The `Toggle Inline Profile` context menu item is now available in diff editors.
+    - New VS Code setting `flamegraph.showFlamegraph` to control how the flamegraph is displayed after profiling. Options: `show`, `showAndFocus`, `onlyShowCodeAnnotations`.
+
+    ### Changed
+
+    - Renamed setting `flamegraph.alwaysUseSudo` to `flamegraph.py-spy.alwaysUseSudo` for consistency.
+    - Small improvements to the flamegraph legend.
+  </Accordion>
+
+  <Accordion title="v0.3.11 — 2025-04-17">
+    ### Added
+
+    - Added a toggle in the flamegraph legend to switch between source code and function name display.
+    - Code display now works for Jupyter notebook cells in addition to Python files.
+    - New VS Code setting `flamegraph.alwaysUseSudo` to always use `sudo` when running py-spy commands.
+    - Flamegraph icon in the flamegraph tab.
+
+    ### Fixed
+
+    - Fixed an issue where `py-spy top` was run without `sudo` on Linux.
+
+    ### Changed
+
+    - Improved process selection with streamlined PID picking and added support for ray processes.
+  </Accordion>
+
+  <Accordion title="v0.3.10 — 2025-04-10">
+    ### Added
+
+    - When clicking the `all` node in the flamegraph, the VS Code editor now opens the file that was profiled.
+
+    ### Fixed
+
+    - Fixed an issue where the `Profile Cell` command did not work when executed via the command palette.
+
+    ### Changed
+
+    - Improved flamegraph legend: filtering by module no longer resets the zoom level unless the currently selected node is affected.
+    - Legend items are now sorted by total time.
+  </Accordion>
+
+  <Accordion title="v0.3.9 — 2025-04-04">
+    ### Added
+
+    - Added tooltips to flamegraph legend items showing time and own time for each module.
+  </Accordion>
+
+  <Accordion title="v0.3.8 — 2025-03-29">
+    ### Fixed
+
+    - Fixed broken flamegraph hyperlinks on Windows.
+    - Fixed an issue on Linux where `sudo` was not used when attaching to a running process.
+  </Accordion>
+
+  <Accordion title="v0.3.7 — 2025-03-08">
+    ### Added
+
+    - New VS Code settings: `flamegraph.py-spy.subprocesses`, `flamegraph.py-spy.native`, `flamegraph.py-spy.nativeAttach`, `flamegraph.py-spy.gil`, `flamegraph.py-spy.idle`, `flamegraph.py-spy.nonblocking`.
+    - New setting `flamegraph.syncInlineAnnotations` (enabled by default) to sync inline annotations with the flamegraph.
+
+    ### Fixed
+
+    - Fixed an issue where profile data was not parsed correctly in multi-process applications.
+
+    ### Changed
+
+    - When a flamegraph tab is already open, profiling a file no longer resizes or reveals the existing tab.
+
+    ### Removed
+
+    - Removed command `Flamegraph: Attach py-spy to running process (native)`. The `--native` flag is now configurable via `flamegraph.py-spy.native` or a custom `tasks.json` task.
+  </Accordion>
+
+  <Accordion title="v0.3.6 — 2025-03-02">
+    ### Added
+
+    - Added support for the VS Code task API. Custom task definitions can now be added to `tasks.json`.
+
+    ### Changed
+
+    - Reintroduced source code display in the flamegraph.
+    - When profiling Jupyter notebooks, the task terminal now remains in the background.
+  </Accordion>
+
+  <Accordion title="v0.3.5 — 2025-02-24">
+    ### Fixed
+
+    - Fixed an issue where profiles were not rendered in Jupyter cells with CRLF line endings.
+    - Fixed an issue where py-spy was not found when the file path contained spaces.
+
+    ### Changed
+
+    - Improved py-spy installation process: installations in the currently selected virtual environment are now used if no global installation is found.
+    - On Windows, VS Code tasks now always use PowerShell.
+    - Improved instructions for adding py-spy to the sudoers file on macOS and Linux.
+  </Accordion>
+
+  <Accordion title="v0.3.4 — 2025-02-17">
+    ### Added
+
+    - Added `Flamegraph: Show py-spy top` command for a `top`-like view of CPU-consuming functions.
+    - Added `Flamegraph: Profile all unit tests with pytest` and `Flamegraph: Profile unit tests in file with pytest` commands.
+
+    ### Changed
+
+    - The `Attach py-spy to running process` command now shows a dropdown list of running Python processes.
+  </Accordion>
+
+  <Accordion title="v0.3.3 — 2025-02-12">
+    ### Changed
+
+    - Improved py-spy installation process.
+  </Accordion>
+
+  <Accordion title="v0.3.2 — 2025-02-02">
+    ### Fixed
+
+    - Fixed an issue where module-level line annotations were not shown in notebooks for some versions of Jupyter.
+  </Accordion>
+
+  <Accordion title="v0.3.1 — 2025-02-02">
+    ### Fixed
+
+    - Fixed broken release: the extension was not activating due to incorrect access of the Python extension API.
+  </Accordion>
+
+  <Accordion title="v0.3.0 — 2025-02-02">
+    ### Added
+
+    - Support for profiling Jupyter notebooks. Notebooks can be profiled via the `Profile` button in the notebook toolbar; individual cells can be profiled with the 🔥 button.
+    - Faster profile loading via caching.
+
+    ### Fixed
+
+    - Fixed an issue where profiles were not rendered when the filepath contained spaces on Windows.
+  </Accordion>
+
+  <Accordion title="v0.2.7 — 2025-01-23">
+    ### Added
+
+    - Module filtering in the flamegraph: legend entries can be checked and unchecked to filter nodes by module.
+    - Context menu items in the file explorer for `.py` and `.pyspy` files.
+    - The `▶` icon in the editor title bar can now be switched to a 🔥 icon to start the py-spy profiler.
+
+    ### Changed
+
+    - py-spy profiles are now saved as `profile.pyspy` in the workspace directory.
+  </Accordion>
+
+  <Accordion title="v0.2.6 — 2025-01-16">
+    ### Fixed
+
+    - Fixed a bug where inline profile decorations were not cleared after executing `Toggle Inline Profile`.
+  </Accordion>
+
+  <Accordion title="v0.2.5 — 2025-01-13">
+    ### Fixed
+
+    - Fixed an issue with auto-installing `py-spy` via the extension.
+    - Fixed a bug where inline profile decorations were sometimes not updated after zooming the flamegraph.
+  </Accordion>
+
+  <Accordion title="v0.2.4 — 2025-01-12">
+    ### Fixed
+
+    - Fixed a performance issue where the extension was slow for large profile files.
+    - Fixed a bug where native frames were not shown in the flamegraph.
+  </Accordion>
+
+  <Accordion title="v0.2.3 — 2024-12-20">
+    ### Changed
+
+    - The flamegraph now shows code line content instead of function names.
+    - The flamegraph is now filtered to only show relevant frames.
+  </Accordion>
+
+  <Accordion title="v0.2.2 — 2024-12-18">
+    ### Added
+
+    - Added support for light and high contrast themes in VS Code.
+    - Added `Flamegraph: Attach py-spy to running process` command.
+
+    ### Changed
+
+    - Simplified flamegraph coloring: colors are now determined solely by module names.
+  </Accordion>
+
+  <Accordion title="v0.2.1 — 2024-12-13">
+    ### Fixed
+
+    - Fixed a bug on Windows where inline profile bars were not shown for all files even though profile data was available.
+
+    ### Changed
+
+    - The `Profile file with py-spy` command now launches a VS Code task instead of a terminal.
+  </Accordion>
+
+  <Accordion title="v0.2.0 — 2024-12-10">
+    ### Added
+
+    - Auto-install `py-spy`: if py-spy is not installed, the extension will offer to install it.
+    - The flamegraph now remembers the selected element after it is closed and reopened.
+
+    ### Fixed
+
+    - Fixed an issue where recursive function calls led to incorrect inline profile information.
+    - Fixed a bug where inline profile bars exceeded 100% of the width.
+
+    ### Changed
+
+    - Better file path resolution when Cmd/Ctrl-clicking a flamegraph entry; `--full-filenames` is now used by default.
+    - Inline profile bars can now be shown for non-Python files (useful for native code profiles).
+  </Accordion>
+
+  <Accordion title="v0.1.0 — 2024-11-24">
+    ### Added
+
+    - Linked flamegraph and inline profile: clicking a flamegraph entry filters the inline profile to show only timing info for visible nodes.
+    - Responsive flamegraph legend: items are scrollable and adjust based on currently visible modules.
+  </Accordion>
+
+  <Accordion title="v0.0.4 — 2024-11-20">
+    ### Fixed
+
+    - Fixed a bug where inline profile decorations were not shown after a VS Code update.
+  </Accordion>
+
+  <Accordion title="v0.0.3 — 2024-11-16">
+    ### Fixed
+
+    - Fixed a bug where the `Toggle Inline Profile` command would sometimes not remove the inline profile decorations.
+  </Accordion>
+
+  <Accordion title="v0.0.2 — 2024-11-13">
+    ### Added
+
+    - Initial release.
+  </Accordion>
+</AccordionGroup>

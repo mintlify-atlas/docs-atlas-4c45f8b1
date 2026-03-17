@@ -1,0 +1,54 @@
+---
+title: "Profiling Python Scripts"
+description: "Profile any Python .py file using py-spy directly from the editor, run button dropdown, or Command Palette."
+---
+
+The Flamegraph extension integrates py-spy to profile Python scripts without any code changes. Results appear as an interactive flamegraph in a new tab and as inline annotations directly in your source code.
+
+## Methods
+
+There are three ways to start profiling a Python script:
+
+<Steps>
+  <Step title="Run button dropdown">
+    Open a `.py` file in the editor. Click the dropdown arrow next to the ▶️ run button in the top-right corner of the editor and select **Flamegraph: Profile file with py-spy**.
+  </Step>
+  <Step title="Explorer context menu">
+    Right-click any `.py` file in the Explorer panel and select **Flamegraph: Profile file with py-spy**.
+  </Step>
+  <Step title="Command Palette">
+    Open the Command Palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows/Linux) and run:
+
+    ```
+    Flamegraph: Profile file with py-spy
+    ```
+  </Step>
+</Steps>
+
+## What happens
+
+Once profiling starts:
+
+1. py-spy attaches to the Python process and begins sampling the call stack.
+2. The profiling output file `profile.pyspy` is saved to the workspace root.
+3. When the script finishes (or you interrupt it), the results load automatically.
+4. An interactive flamegraph opens in a new editor tab.
+5. Inline annotations appear next to each function in your source code, showing relative time spent.
+
+## Stopping profiling
+
+Press `Ctrl+C` in the integrated terminal to interrupt py-spy at any time. The profile captured up to that point will still be loaded and displayed.
+
+## Inline annotations
+
+Inline annotations show timing information for each function scope directly in the editor. To toggle them on or off, right-click anywhere in the editor and select **Flamegraph: Toggle Inline Profile**.
+
+When you click an element in the flamegraph, the inline annotations update to reflect only the timing for that selected call subtree.
+
+## Output file
+
+The profiling results are written to `profile.pyspy` in the workspace root. This file is watched automatically — if you regenerate it from the command line, the extension reloads the profile immediately. You can also load any `.pyspy` file manually via **Flamegraph: Load Profile**.
+
+<Note>
+  On macOS and Linux, py-spy may require elevated privileges to attach to a process. The extension handles this automatically by prepending `sudo` on macOS. If you encounter permission errors on Linux, enable the `flamegraph.py-spy.alwaysUseSudo` setting or run VS Code with the necessary permissions.
+</Note>
