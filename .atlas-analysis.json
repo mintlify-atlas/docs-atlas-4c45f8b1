@@ -1,0 +1,77 @@
+{
+  "projectType": "general",
+  "projectName": "Flamegraph for VS Code",
+  "projectDescription": "A VS Code extension that integrates py-spy and memray profilers to visualize Python CPU and memory performance as interactive flamegraphs with inline code annotations.",
+  "theme": "palm",
+  "primaryColor": "#de9924",
+  "lightColor": "#364e6f",
+  "darkColor": "#b2c0cf",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "quickstart"]
+          },
+          {
+            "group": "Profiling",
+            "pages": [
+              "profiling/python-scripts",
+              "profiling/jupyter-notebooks",
+              "profiling/memory-profiling",
+              "profiling/attach-to-process",
+              "profiling/pytest"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/settings",
+              "configuration/tasks",
+              "configuration/keyboard-shortcuts"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/commands",
+              "reference/flamegraph-ui",
+              "reference/cli-usage",
+              "reference/changelog"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "CPU profiling with py-spy for Python scripts and Jupyter notebooks",
+    "Memory profiling with memray (Linux, macOS, WSL, Docker)",
+    "Interactive flamegraph visualization with zoom, filtering, and module legend",
+    "Inline code annotations showing timing or memory per function scope",
+    "Attach profiler to a running process by PID",
+    "Profile pytest unit tests with a single command",
+    "VS Code Tasks integration for custom profiling workflows",
+    "Linked flamegraph and inline annotations — selecting a node filters the annotations"
+  ],
+  "publicApiSurface": [
+    "flamegraph.runProfiler — Profile file with py-spy",
+    "flamegraph.runMemrayProfiler — Profile file with memray",
+    "flamegraph.profileCell — Profile Jupyter cell with py-spy",
+    "flamegraph.profileNotebook — Profile Jupyter notebook with py-spy",
+    "flamegraph.memoryProfileCell — Profile Jupyter cell with memray",
+    "flamegraph.memoryProfileNotebook — Profile Jupyter notebook with memray",
+    "flamegraph.attachProfiler — Attach py-spy to running process",
+    "flamegraph.attachMemoryProfiler — Attach memray to running process",
+    "flamegraph.memoryLive — Attach memray live view to running process",
+    "flamegraph.loadProfile — Load .pyspy or .memray profile file",
+    "flamegraph.toggleProfile — Toggle inline profile annotations",
+    "flamegraph.showFlamegraph — Open flamegraph panel",
+    "flamegraph.runAllPytests — Profile all pytest tests",
+    "flamegraph.runPytestFile — Profile pytest tests in active file",
+    "flamegraph.top — Show py-spy top view",
+    "flamegraph task definition (tasks.json) with file, pid, args, native, subprocesses, sudo, pythonPath, profilerPath"
+  ]
+}
